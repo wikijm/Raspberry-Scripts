@@ -1,8 +1,30 @@
 #!/bin/bash
+#=======================================================================
+#
+#          FILE:  SecurizeSSH.sh
+# 
+#         USAGE:  ./SecurizeSSH.sh 
+# 
+#   DESCRIPTION:  Modification needed 
+# 
+#       OPTIONS:  ---
+#  REQUIREMENTS:  ---
+#          BUGS:  ---
+#         NOTES:  ---
+#        AUTHOR:  Jean-Marc ALBERT
+#       COMPANY:  ---
+#       CREATED: 31.08.2015 19:50:34 UST
+#      REVISION:  0.0.3
+#=======================================================================
 ### Variables ###
 NOW=$(date +%y.%m.%d-%T)
+scriptfile="$(readlink -f $0)"
+CURRENT_DIR="$(dirname ${scriptfile})"
+
 sshdConfigFile='/etc/ssh/sshd_config'
 denyhostsConfigFile='/etc/denyhosts.conf'
+
+PKGSTOINSTALL="denyhosts"
 
 ### Functions ###
 	shw_grey () {
@@ -36,7 +58,15 @@ denyhostsConfigFile='/etc/denyhosts.conf'
 	        return 0
 	fi
 }
- 
+### Initialisation ###
+
+# Must be root
+if [[ $EUID -ne 0 ]]; then
+        echo "This script must be run as root" #1>&2
+        exit 0
+fi
+
+
 ### Actions ###
 
 # sshd configuration
@@ -54,10 +84,33 @@ shw_info "### Step 1 : Modify sshd 'PermitRootLogin' value and used port ###"
 	fi
 	
 shw_info "### Step 2 : Install & Configure DenyHosts ###"
+	
+	# If some dependencies are missing, asks if user wants to install
+	if [ "$PKGSTOINSTALL" != "" ]; then
+		echo -n "Some dependencies may missing. Would you like to install them? (Y/n): "
+		read SURE
+		# If user want to install missing dependencies
+		if [[ $SURE = "Y" || $SURE = "y" || $SURE = "" ]]; then
+			# Debian, Ubuntu and derivatives (with apt-get)
+			if which apt-get &> /dev/null; then
+				apt-get install $PKGSTOINSTALL
+		# Else, if no package manager has been found
+		else
+			# Set $NOPKGMANAGER
+			NOPKGMANAGER=TRUE
+			shw_err "ERROR: No package manager found. Please, manually install: $PKGSTOINSTALL."
+			fi
+		fi
+	fi
+		
 	if [ "$PROCESS_NUM" == "0" ];
 	then
 		shw_err "DenyHosts is not installed, install it now."
 		apt-get install denyhosts -y
+	else
+		shw_info "DenyHosts already active."
+	fi
+
 		shw_info "Modify configuration thanks to this tutorial : http://www.it-connect.fr/proteger-son-acces-ssh-avec-denyhosts%EF%BB%BF/"
 		cp $denyhostsConfigFile $denyhostsConfigFile.$NOW
 		sed -i 's@#SECURE_LOG = /var/log/auth.log@SECURE_LOG = /var/log/auth.log@g' $denyhostsConfigFile
@@ -69,8 +122,5 @@ shw_info "### Step 2 : Install & Configure DenyHosts ###"
 		sed -i 's@BLOCK_SERVICE = sshd@#BLOCK_SERVICE = sshd@g' $denyhostsConfigFile
 		shw_warn "denyhosts restart in progress..."
 		service denyhosts restart
-	else
-		shw_info "DenyHosts already active."
-	fi
-	
-	exit 0
+
+exit 0
