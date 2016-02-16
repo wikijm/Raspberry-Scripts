@@ -1,5 +1,6 @@
 echo "Doing Debian Updates (slow) ..."
 sudo aptitude -y update
+sudo aptitude -y install apt-transport-https
 sudo aptitude -y upgrade
 sudo aptitude -y dist-upgrade
 sudo aptitude -y autoclean
