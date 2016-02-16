@@ -1,3 +1,6 @@
+echo "Active root shell prompt colorization"
+PS1='${debian_chroot:+($debian_chroot)}\[\033[01;31m\]\u@\h\[\033[00m\]:\[\033[01;34m\]\w\[\033[00m\]\$ ' >> /root/.bashrc
+
 echo "Doing Debian Updates (slow) ..."
 sudo aptitude -y update
 sudo aptitude -y install apt-transport-https
