@@ -25,7 +25,7 @@ echo "Installing Standard Tools"
 sudo aptitude -y install irssi telnet dnsutils bluetooth whois htop
 
 echo "Installing Development Environment"
-sudo aptitude -y install vim nano git git-all tmux screen
+sudo aptitude -y install vim nano git git-all tmux screen build-essential ruby-dev libpcap-dev
 
 echo "Installing System/Security"
 sudo aptitude -y install libpcap-dev python-libpcap bridge-utils tcpdump tor nmap python-nmap
