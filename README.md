@@ -13,4 +13,4 @@ Usage
 
 From your home directory (/home/pi/)
 
-curl -Lo- https://raw.githubusercontent.com/wikijm/raspberry-bootstrap/master/raspberry-bootstrap | bash
+curl -Lo- https://raw.githubusercontent.com/wikijm/Raspberry-Scripts/master/Bootstrap-install.sh | bash
