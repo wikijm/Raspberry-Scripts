@@ -1,39 +1,73 @@
-echo "Active root shell prompt colorization"
-PS1='${debian_chroot:+($debian_chroot)}\[\033[01;31m\]\u@\h\[\033[00m\]:\[\033[01;34m\]\w\[\033[00m\]\$ ' >> /root/.bashrc
+#!/bin/bash
+#======================================================================================================================================
+#          FILE:  bootstrap-install.sh
+# 
+#         USAGE:  cd /home/pi && chmod +x ./bootstrap-install.sh && ./bootstrap-install.sh
+# 
+#   DESCRIPTION:  Prepare Raspbian after fresh new deployment 
+# 
+#       OPTIONS:  ---
+#  REQUIREMENTS:  * Connect Raspberry with:
+#											- MicroSD card containing last Raspbian OS		
+#											- Network cable
+#											- (Optional) Wifi dongle
+#											- Power supply
+#
+#                 * On Desktop, launch Menu > Raspberry Pi Configuration, then:
+#					   					  										- Click "Expand Filesystem"
+#					   					  									 	- Modify "Hostname" value
+#					   					  										- Select "To CLI" for "Boot" option
+#					   					  										- Modify "Hostname" value
+#					   					  										- Uncheck "Auto Login option"
+#					   					  										- Modify options on "Localisation" tab
+#					   					  										- Apply modifications by clicking on "OK" then "YES"
+#          BUGS:  ---
+#         NOTES:  ---
+#        AUTHOR:  Jean-Marc ALBERT
+#       COMPANY:  ---
+#       CREATED: 18.02.2016 19:17:34 UST
+#      REVISION:  0.0.1
+#======================================================================================================================================
 
-echo "Doing Debian Updates (slow) ..."
-sudo aptitude -y update
-sudo aptitude -y install apt-transport-https
-sudo aptitude -y upgrade
-sudo aptitude -y dist-upgrade
-sudo aptitude -y autoclean
-sudo aptitude -y full-upgrade
 
-echo "Installing Raspberry Pi Packages"
-sudo aptitude -y libraspberrypi-bin libraspberrypi0 raspberrypi-bootloader libraspberrypi-doc libraspberrypi-dev
+### Variables ###
+NOW=$(date +%y.%m.%d-%T)
+scriptfile="$(readlink -f $0)"
+CURRENT_DIR="$(dirname ${scriptfile})"
 
-echo "Installing Base Packages"
-sudo aptitude -y install libgl1-mesa-dri libparse-debianchangelog-perl uuid-runtime xfonts-base gnupg-curl oss-compat upower libreadline5 sysv-rc-conf sysstat
 
-echo "Installing USB WLAN Firmware"
-sudo aptitude -y install zd1211-firmware firmware-ralink firmware-realtek
+### Functions ###
+	shw_grey () {
+    echo $(tput bold)$(tput setaf 0) $@ $(tput sgr 0)
+}
+	shw_norm () {
+    echo $(tput bold)$(tput setaf 9) $@ $(tput sgr 0)
+}
+	shw_info () {
+    echo $(tput bold)$(tput setaf 4) $@ $(tput sgr 0)
+}
+	shw_warn () {
+    echo $(tput bold)$(tput setaf 2) $@ $(tput sgr 0)
+}
+	shw_err ()  {
+    echo $(tput bold)$(tput setaf 1) $@ $(tput sgr 0)
+}
 
-echo "Installing Web Servers"
-sudo aptitude -y install apache2 lighttpd
 
-echo "Installing Languages"
-sudo aptitude -y install python php5 python-pygame python-rpi.gpio python3-rpi.gpio
+### Actions ###
+shw_info "Define pi password"
+passwd pi
 
-echo "Installing Standard Tools"
-sudo aptitude -y install irssi telnet dnsutils bluetooth whois htop
+shw_info "Define root password"
+sudo passwd root
 
-echo "Installing Development Environment"
-sudo aptitude -y install vim nano git git-all tmux screen build-essential ruby-dev libpcap-dev
+shw_info "Start root instance"
+su root
 
-echo "Installing System/Security"
-sudo aptitude -y install libpcap-dev python-libpcap bridge-utils tcpdump tor nmap python-nmap
+shw_info "Active root shell prompt colorization"
+echo "PS1='${debian_chroot:+($debian_chroot)}\[\033[01;31m\]\u@\h\[\033[00m\]:\[\033[01;34m\]\w\[\033[00m\]\$ ' " >> /root/.bashrc
 
-echo "Stopping expensive services"
+shw_info "Stopping expensive services"
 sudo update-rc.d mysql remove
 sudo /etc/init.d/mysql stop
 sudo update-rc.d tor remove
@@ -41,28 +75,32 @@ sudo /etc/init.d/tor stop
 sudo /etc/init.d/postgresql stop
 sudo update-rc.d postgresql remove
 
-echo "Doing Debian Updates (slow) ..."
-sudo aptitude -y update
-sudo aptitude -y upgrade
-sudo aptitude -y dist-upgrade
-sudo aptitude -y autoclean
-sudo aptitude -y full-upgrade
+shw_info "Active apt for progressbar"
+echo 'Dpkg::Progress-Fancy "1";' > /etc/apt/apt.conf.d/99progressbar
 
-echo "Install raspberry-motd"
+shw_info "Doing Debian Updates (slow) ..."
+sudo apt -y update
+sudo apt -y install apt-transport-https
+sudo apt -y upgrade
+sudo apt -y dist-upgrade
+sudo aptitude -y autoclean
+sudo apt -y full-upgrade
+
+shw_info "Installing Standard Tools"
+sudo apt -y install htop git git-all
+
+shw_info "Install raspberry-motd"
 cd /etc/profile.d/
 wget https://raw.githubusercontent.com/wikijm/raspberrypi-motd/master/motd.sh
-chown root:root motd.sh
+chown pi:pi motd.sh
 chmod +x motd.sh
 
-echo "Installing rpi-update"
-sudo aptitude -y install ca-certificates git-core
+shw_info "Installing rpi-update"
+sudo apt -y install ca-certificates git-core
 sudo wget https://raw.github.com/Hexxeh/rpi-update/master/rpi-update -O /usr/bin/rpi-update && sudo chmod +x /usr/bin/rpi-update
 
-echo "Updating firmware"
+shw_info "Updating firmware"
 sudo rpi-update
 
-echo "Define root password"
-sudo passwd root
-
-echo "Rebooting Raspberry"
+shw_warn "Rebooting Raspberry"
 sudo reboot
