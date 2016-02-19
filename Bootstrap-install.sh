@@ -14,13 +14,13 @@
 #											- Power supply
 #
 #                 * On Desktop, launch Menu > Raspberry Pi Configuration, then:
-#					   					  										- Click "Expand Filesystem"
-#					   					  									 	- Modify "Hostname" value
-#					   					  										- Select "To CLI" for "Boot" option
-#					   					  										- Modify "Hostname" value
-#					   					  										- Uncheck "Auto Login option"
-#					   					  										- Modify options on "Localisation" tab
-#					   					  										- Apply modifications by clicking on "OK" then "YES"
+#					   						- Click "Expand Filesystem"
+#					   					 	- Modify "Hostname" value
+#					   						- Select "To CLI" for "Boot" option
+#					   						- Modify "Hostname" value
+#					  						- Uncheck "Auto Login option"
+#					  						- Modify options on "Localisation" tab
+#					  						- Apply modifications by clicking on "OK" then "YES"
 #          BUGS:  ---
 #         NOTES:  ---
 #        AUTHOR:  Jean-Marc ALBERT
