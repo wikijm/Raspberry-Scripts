@@ -76,6 +76,7 @@ shw_info "### Step 1 : Modify sshd 'PermitRootLogin' value and used port ###"
 		cp /etc/ssh/sshd_config /etc/ssh/sshd_config.$NOW
 		shw_warn "File $sshdConfigFile exists. Modify 'PermitRootLogin' value from 'yes' to 'no' and 'Port' value from '22' to '2222'."
 		sed -i 's/PermitRootLogin yes/PermitRootLogin no/g' $sshdConfigFile
+		sed -i 's/PermitRootLogin without-password/PermitRootLogin no/g' $sshdConfigFile
 		sed -i 's/Port 22/Port 2222/g' $sshdConfigFile
 		shw_warn "sshd restart in progress..."
 		service ssh restart
