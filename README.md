@@ -1,7 +1,4 @@
-# Raspberry-Scripts
-Scripts (or eventually procedures) to use Raspberry Pi
-
-Raspberry-bootstrap
+# Raspberry-bootstrap
 =========
 
 First script to run after setting up SD for Raspberry Pi
