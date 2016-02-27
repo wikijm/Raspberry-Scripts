@@ -19,8 +19,7 @@ REQUIREMENTS:  * Connect Raspberry with:
 
 Usage:
   From your home directory (/home/pi/)
-  ```curl -Lo- http://bit.ly/1Te6AAS
-  https://raw.githubusercontent.com/wikijm/Raspberry-Scripts/master/Bootstrap-install.sh | bash```
+  ```curl -Lo- http://bit.ly/1Te6AAS | bash```
   
   Tip:
   http://bit.ly/1Te6AAS
