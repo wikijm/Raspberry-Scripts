@@ -5,7 +5,7 @@ First script to run after setting up SD for Raspberry Pi
 REQUIREMENTS:
 
 		* Connect Raspberry with:
-					   					- MicroSD card containing last Raspbian OS							   				- Network cable
+					   					- MicroSD card containing last Raspbian OS							   					- Network cable
 					   					- (Optional) Wifi dongle
 					   					- Power supply
 
