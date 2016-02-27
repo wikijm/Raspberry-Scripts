@@ -55,15 +55,6 @@ CURRENT_DIR="$(dirname ${scriptfile})"
 
 
 ### Actions ###
-shw_info "Define pi password"
-passwd pi
-
-shw_info "Define root password"
-sudo passwd root
-
-shw_info "Start root instance"
-su root
-
 shw_info "Active root shell prompt colorization"
 echo "PS1='${debian_chroot:+($debian_chroot)}\[\033[01;31m\]\u@\h\[\033[00m\]:\[\033[01;34m\]\w\[\033[00m\]\$ ' " >> /root/.bashrc
 
