@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 #Goal: Detect presence thanks to à Bluetooth device (cellphone, smartwatch, beacon, headset,...).
 #Source: http://clement.storck.me/blog/2016/02/detection-de-presence-en-bluetooth/
 
