@@ -4,6 +4,7 @@
 
 COUNTPRESENT=0
 COUNTABSENT=0
+OWNER=0600000000 #Cellphone number
 
 while true
 do
@@ -19,14 +20,17 @@ do
         then
                 # Do something here
                 COUNTABSENT=0
-                echo "$(date) - "$2" est présent"
+                echo "$(date) - "$2" is present"
+                /home/pi/jarvis/jarvis.sh -s "Welcome $2" #Ask Jarvis (domotic assistant) to welcome the user vocally
+                echo $2" arrived at home since $(date)" | gammu sendsms TEXT $OWNER #Send an SMS to the house owner, thanks to a 3G dongle and gammu program
         fi
 
         if [[ "$COUNTABSENT" = 3 ]] # We need 3 confirmations to be sure device is really away
         then
                 # Do something here
                 COUNTPRESENT=0
-                echo "$(date) - "$2" est absent"
+                echo "$(date) - "$2" is away"
+                echo $2" is gone since $(date)" | gammu sendsms TEXT $OWNER #Send an SMS to the house owner, thanks to a 3G dongle and gammu program
         fi
 
     echo "$(date) - confirmation presence: $COUNTPRESENT"
