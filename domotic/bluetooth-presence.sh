@@ -39,7 +39,7 @@ do
                 #echo "$(date) - "$2" is away"
                 echo $DATESPECIFIC","$2",away" >> $LOGFILE
                 curl "http://$CAMIP/setSystemMotion" -H "Host: $CAMIP" -H "Referer: http://$CAMIP/setSystemMotion" -H "Authorization: Basic $CAMAUTHCODE" -H "Connection: keep-alive" -H "Upgrade-Insecure-Requests: 1" --data "ReplySuccessPage=motion.htm&ReplyErrorPage=motion.htm&MotionDetectionEnable=1&MotionDetectionScheduleDay=127&MotionDetectionScheduleMode=0&MotionDetectionSensitivity=70&ConfigSystemMotion=Save" >/dev/null 2>&1
-                echo $DATESPECIFIC","$2",SwitchOFF" >> $LOGFILE
+                echo $DATESPECIFIC","$2",SwitchON" >> $LOGFILE
                 echo $2" is gone since $(date)" | gammu sendsms TEXT $OWNER #Send an SMS to the house owner, thanks to a 3G dongle and gammu program
         fi
 
