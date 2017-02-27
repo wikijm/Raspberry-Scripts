@@ -66,6 +66,10 @@ sudo /etc/init.d/tor stop
 sudo /etc/init.d/postgresql stop
 sudo update-rc.d postgresql remove
 
+shw_info "Uninstall unused apps"
+sudo apt-get -y remove wolfram-engine
+sudo apt-get -y purge wolfram-engine 
+
 shw_info "Active apt for progressbar"
 echo 'Dpkg::Progress-Fancy "1";' > /etc/apt/apt.conf.d/99progressbar
 
