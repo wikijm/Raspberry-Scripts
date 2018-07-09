@@ -1,6 +1,7 @@
 # Raspberry-bootstrap
-
 First script to run after setting up SD for Raspberry Pi
+
+[![Buy me a coffee](https://www.buymeacoffee.com/assets/img/custom_images/black_img.png)](https://www.buymeacoff.ee/WikiJM)
 
 REQUIREMENTS:
 
